@@ -1,0 +1,79 @@
+{
+  "tr-TR": {
+    "giris_yap": "Giriş Yap",
+    "ileri": "İleri",
+    "kaydet": "Kaydet",
+    "tamam": "Tamam",
+    "geri": "Geri",
+    "vazgec": "Vazgeç",
+    "guncelle": "Güncelle",
+    "evet": "Evet",
+    "gonder": "Gönder",
+    "internet_baglantinizi_kontrol_ediniz": "İnternet bağlantınızı kontrol ediniz.",
+    "auth_stack": {
+      "sorular": "Sorular"
+    },
+    "login": {
+      "hosgeldiniz": "Hoşgeldiniz",
+      "nickname": "Kullanıcı Adı",
+      "text": "Gizliliğinizi önemsiyoruz. Lütfen ad ve soyad girmeden kullanıcı adı oluşturunuz.",
+      "sifre": "Şifre",
+      "sifremi_unuttum": "Şifremi Unuttum",
+      "giris_yap": "Giriş Yap",
+      "uye_degil_misiniz": "Üye değil misiniz? ",
+      "hesap_olustur": "Hesap Oluştur",
+      "ilerle": "İlerle",
+      "cinsiyetinizi_secin": "Cinsiyetinizi Seçin",
+      "kadin": "Kadın",
+      "erkek": "Erkek",
+      "email": "E-Mail",
+      "dogum_tarihi": "Doğum Tarihi",
+      "hesabiniz_var_mi": "Hesabınız var mı? ",
+      "hassas_veriler_hakkinda": "Hassas Veriler Hakkında",
+      "hassas_veriler_hakkinda_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's",
+      "accept_text1": "*Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and?",
+      "accept_text2": "*Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "accept_text3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "kabul_ediyorum": "Kabul Ediyorum",
+      "giris_hatasi": "Kullanıcı adı veya şifre hatalı.",
+      "kvkk_hata": "KVKK Sözleşmesi kabul edilmelidir.",
+      "bos_alan_hata": "Lütfen tüm alanları doldurunuz."
+    },
+    "home": {
+      "merhaba": "Merhaba",
+      "ankete_basla": "ANKETE BAŞLA"
+    },
+    "survey": {
+      "tamamlanan_anketler": "Tamamlanan Anketler",
+      "puan": "Puan",
+      "toplam": "Toplam",
+      "bugun": "Bugün",
+      "liste": "Liste",
+      "modunuz": "Modunuz",
+      "temizle": "Temizle"
+    },
+    "profile": {
+      "profil": "PROFİL",
+      "hesap_bilgileri": "Hesap Bilgileri",
+      "nickname": "Kullanıcı Adı",
+      "email": "E-Mail",
+      "dogum_tarihi": "Doğum Tarihi",
+      "cinsiyet": "Cinsiyet",
+      "hakkimizda": "Hakkımızda",
+      "gizlilik_politikasi": "Gizlilik Politikası",
+      "sartlar_ve_kosullar": "Şartlar ve Koşullar",
+      "kadin": "Kadın",
+      "erkek": "Erkek",
+      "kaydet": "Kaydet",
+      "guncelle": "Güncelle",
+      "bilgiler_guncellendi": "Bilgiler Güncellendi"
+    },
+    "questions": {
+      "anket_konu_basligi": "Anket Konu Başlığı",
+      "anket_tamamlandi": "Anket Tamamlandı",
+      "veriler_olusturuluyor": "Veriler Oluşturuluyor",
+      "sonraki_soru": "Sonraki Soru",
+      "bitir": "Bitir"
+    }
+  }
+}

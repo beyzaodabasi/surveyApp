@@ -1,0 +1,79 @@
+{
+  "en": {
+    "giris_yap": "Login",
+    "ileri": "Next",
+    "kaydet": "Save",
+    "tamam": "Done",
+    "geri": "Back",
+    "vazgec": "Cancel",
+    "guncelle": "Update",
+    "evet": "Yes",
+    "gonder": "Send",
+    "internet_baglantinizi_kontrol_ediniz": "Please check your internet connection.",
+    "auth_stack": {
+      "sorular": "Questions"
+    },
+    "login": {
+      "hosgeldiniz": "Welcome",
+      "nickname": "Nickname",
+      "text": "We care about your privacy. Please create a nickname without entering your name and surname.",
+      "sifre": "Password",
+      "sifremi_unuttum": "Forgot Password",
+      "giris_yap": "Login",
+      "uye_degil_misiniz": "Not a member? ",
+      "hesap_olustur": "Create Account",
+      "ilerle": "Proceed",
+      "cinsiyetinizi_secin": "Select Your Gender",
+      "kadin": "Female",
+      "erkek": "Male",
+      "email": "E-Mail",
+      "dogum_tarihi": "Date of Birth",
+      "hesabiniz_var_mi": "Do you have an account? ",
+      "hassas_veriler_hakkinda": "About Sensitive Data",
+      "hassas_veriler_hakkinda_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's",
+      "accept_text1": "*Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and?",
+      "accept_text2": "*Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "accept_text3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "kabul_ediyorum": "I Accept",
+      "giris_hatasi": "Incorrect username or password.",
+      "kvkk_hata": "The KVKK Agreement must be accepted.",
+      "bos_alan_hata": "Please fill in all fields."
+    },
+    "home": {
+      "merhaba": "Hello",
+      "ankete_basla": "START SURVEY"
+    },
+    "survey": {
+      "tamamlanan_anketler": "Completed Surveys",
+      "puan": "Point",
+      "toplam": "Total",
+      "bugun": "Today",
+      "liste": "List",
+      "modunuz": "Your Mode",
+      "temizle": "Clear"
+    },
+    "profile": {
+      "profil": "PROFILE",
+      "hesap_bilgileri": "Account Information",
+      "nickname": "Nickname",
+      "email": "E-Mail",
+      "dogum_tarihi": "Date of Birth",
+      "cinsiyet": "Gender",
+      "hakkimizda": "About Us",
+      "gizlilik_politikasi": "Privacy Policy",
+      "sartlar_ve_kosullar": "Terms and Conditions",
+      "kadin": "Female",
+      "erkek": "Male",
+      "kaydet": "Save",
+      "guncelle": "Update",
+      "bilgiler_guncellendi": "Information Updated"
+    },
+    "questions": {
+      "anket_konu_basligi": "Survey Topic Title",
+      "anket_tamamlandi": "Survey Completed",
+      "veriler_olusturuluyor": "Creating Data",
+      "sonraki_soru": "Next Question",
+      "bitir": "Finish"
+    }
+  }
+}
