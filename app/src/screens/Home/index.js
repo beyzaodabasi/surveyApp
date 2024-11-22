@@ -28,11 +28,11 @@ const Home = ({ ...props }) => {
     const template = {
       ID: ID,
       // maxSeconds: 1800,
-      maxSeconds: 20,
+      maxSeconds: 80,
       isCompleted: false,
       updatedDate: createdDate,
       createdDate: createdDate,
-      point: 0,
+      point: 50,
       questions: [
         {
           ID: 1,
@@ -85,7 +85,7 @@ const Home = ({ ...props }) => {
             { id: 3, title: "Hayir", color: "#E3C700" },
             { id: 4, title: "Kullanmiyorum", color: "#FF8B00" },
             { id: 5, title: "Lorem ipsum", color: "#FF1D25" },
-            { id: 6, title: "Lorem ipsum", color: "#25C133" },
+            { id: 6, title: "Lorem Ipsum", color: "#25C133" },
             { id: 7, title: "Kullaniyorum", color: "#7ABC11" },
             { id: 8, title: "Lorem", color: "#E3C700" },
           ],
@@ -93,24 +93,63 @@ const Home = ({ ...props }) => {
         },
       ],
     }
-
     // check all survey objects and if one of them is not completed yet, dont create the new survey, find the not finished one
-    const unfinishedSurvey = surveyList.find((survey) => !survey.isCompleted)
+    // const unfinishedSurvey = surveyList.find((survey) => !survey.isCompleted)
+    // if (unfinishedSurvey) {
+    //   setAlertText(i18n.t("home.tamamlanmamis_anket_bulunmaktadir"))
+    //   setSuccess(false)
+    //   setAlert(true)
+    //   setTimeout(() => {
+    //     navigation.navigate("Questions")
+    //   }, 2000)
+    //   return
+    // }
+
+    // // add new object end of the surveyList
+    // let currentList = surveyList
+    // currentList.push(template)
+    // updateSurveyList(currentList)
+
+    // navigation.navigate("Questions")
+
+    // Check for unfinished surveys with expired time and mark them as completed
+    const currentDate = new Date()
+
+    const updatedSurveyList = surveyList.map((survey) => {
+      // If survey is not completed and its time is expired
+      if (!survey.isCompleted) {
+        const elapsed = Math.floor((currentDate - new Date(survey.createdDate)) / 1000)
+        if (elapsed >= survey.maxSeconds) {
+          // Mark the expired survey as completed
+          return { ...survey, isCompleted: true }
+        }
+      }
+      return survey
+    })
+
+    // Update the survey list with completed surveys
+    updateSurveyList(updatedSurveyList)
+
+    // Check if there is still an unfinished survey
+    const unfinishedSurvey = updatedSurveyList.find((survey) => !survey.isCompleted)
     if (unfinishedSurvey) {
+      // Show alert if there is an unfinished survey
       setAlertText(i18n.t("home.tamamlanmamis_anket_bulunmaktadir"))
       setSuccess(false)
       setAlert(true)
+
+      // Redirect to "Questions" screen after a delay
       setTimeout(() => {
         navigation.navigate("Questions")
       }, 2000)
       return
     }
 
-    // add new object end of the surveyList
-    let currentList = surveyList
-    currentList.push(template)
-    updateSurveyList(currentList)
+    // Add the new survey if there is no unfinished survey
+    updatedSurveyList.push(template)
+    updateSurveyList(updatedSurveyList)
 
+    // Redirect to "Questions" screen after adding the new survey
     navigation.navigate("Questions")
   }
 

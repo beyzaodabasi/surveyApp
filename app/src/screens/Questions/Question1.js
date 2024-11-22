@@ -4,7 +4,7 @@ import { styles } from "./styles"
 import PropTypes from "prop-types"
 
 const Question1 = (props) => {
-  const { currentQuestion, handleOptionSelect, selected, setSelected, moderateScale } = props
+  const { moderateScale, currentQuestion, selected, setSelected, updateQuestionValue } = props
 
   return (
     <>
@@ -15,15 +15,15 @@ const Question1 = (props) => {
           <>
             <TouchableOpacity
               onPress={() => {
-                handleOptionSelect(item.title)
-                setSelected(item.id)
+                updateQuestionValue(1, item.title)
+                setSelected(item.title)
               }}
               style={{
                 ...styles().chip,
                 backgroundColor: item.color,
                 transform: [
                   {
-                    translateY: selected !== item.id ? moderateScale(10) : 0,
+                    translateY: selected !== item.title ? moderateScale(10) : 0,
                   },
                 ],
               }}
@@ -34,7 +34,7 @@ const Question1 = (props) => {
     A horizontal line for wich touchable is selected, draw a blue line under the selected touchable
     */}
             <View style={styles().line} />
-            {selected === item.id && (
+            {selected === item.title && (
               <View
                 style={{
                   ...styles().selectedLine,
@@ -52,11 +52,12 @@ const Question1 = (props) => {
 }
 
 Question1.propTypes = {
-  currentQuestion: PropTypes.object,
-  handleOptionSelect: PropTypes.func,
-  setSelected: PropTypes.func,
-  selected: PropTypes.number,
   moderateScale: PropTypes.func,
+  currentQuestion: PropTypes.object,
+  selected: PropTypes.string,
+  setSelected: PropTypes.func,
+  handleOptionSelect: PropTypes.func,
+  updateQuestionValue: PropTypes.func,
 }
 
 export default Question1

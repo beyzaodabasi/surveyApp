@@ -19,6 +19,10 @@ const Survey = ({ ...props }) => {
   const [loading, setLoading] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [selectedCard, setSelectedCard] = useState({})
+  const totalPoint = surveyList.reduce((acc, item) => acc + item.point, 0)
+  const total = surveyList.length
+  const todayPoint = surveyList.filter((item) => new Date(item.createdDate).toLocaleDateString() == new Date().toLocaleDateString()).reduce((acc, item) => acc + item.point, 0)
+  const todayTotal = surveyList.filter((item) => new Date(item.createdDate).toLocaleDateString() == new Date().toLocaleDateString()).length
 
   function clearSurveyList() {
     updateSurveyList([])
@@ -41,7 +45,7 @@ const Survey = ({ ...props }) => {
           <Text style={styles().mainText}>{i18n.t("survey.tamamlanan_anketler")}</Text>
           <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
             <View style={styles().view1}>
-              <Text style={styles().numText}>30</Text>
+              <Text style={styles().numText}>{totalPoint}</Text>
               <Text>{i18n.t("survey.puan")}</Text>
             </View>
             <Divider
@@ -53,7 +57,7 @@ const Survey = ({ ...props }) => {
               }}
             />
             <View style={styles().view2}>
-              <Text style={styles().numText}>7</Text>
+              <Text style={styles().numText}>{total}</Text>
               <Text>{i18n.t("survey.toplam")}</Text>
             </View>
             <Divider
@@ -65,7 +69,7 @@ const Survey = ({ ...props }) => {
               }}
             />
             <View style={styles().view3}>
-              <Text style={styles().numText}>2</Text>
+              <Text style={styles().numText}>{todayTotal}</Text>
               <Text>{i18n.t("survey.bugun")}</Text>
             </View>
           </View>

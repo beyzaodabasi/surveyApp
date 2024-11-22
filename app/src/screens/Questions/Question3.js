@@ -4,7 +4,7 @@ import { styles } from "./styles"
 import PropTypes from "prop-types"
 
 const Question3 = (props) => {
-  const { currentQuestion, handleOptionSelect, selectValue, setSelectValue } = props
+  const { currentQuestion, selectValue, setSelectValue, updateQuestionValue } = props
 
   return (
     <>
@@ -21,7 +21,7 @@ const Question3 = (props) => {
           <TouchableOpacity
             key={item.id}
             onPress={() => {
-              handleOptionSelect(item.title)
+              updateQuestionValue(3, item.title)
               setSelectValue(item.title)
             }}
             style={{
@@ -46,9 +46,9 @@ const Question3 = (props) => {
 
 Question3.propTypes = {
   currentQuestion: PropTypes.object,
-  handleOptionSelect: PropTypes.func,
   selectValue: PropTypes.string,
   setSelectValue: PropTypes.func,
+  updateQuestionValue: PropTypes.func,
 }
 
 export default Question3

@@ -68,7 +68,11 @@
       "erkek": "Erkek",
       "kaydet": "Kaydet",
       "guncelle": "Güncelle",
-      "bilgiler_guncellendi": "Bilgiler Güncellendi"
+      "bilgiler_guncellendi": "Bilgiler Güncellendi",
+      "dil_secimi": "Dil Seçimi",
+      "turkce": "Türkçe",
+      "ingilizce": "İngilizce",
+      "dil_basariyla_degistirildi": "Dil başarıyla değiştirildi."
     },
     "questions": {
       "anket_konu_basligi": "Anket Konu Başlığı",

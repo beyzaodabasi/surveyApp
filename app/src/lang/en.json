@@ -68,7 +68,11 @@
       "erkek": "Male",
       "kaydet": "Save",
       "guncelle": "Update",
-      "bilgiler_guncellendi": "Information Updated"
+      "bilgiler_guncellendi": "Information Updated",
+      "dil_secimi": "Language Selection",
+      "turkce": "Turkish",
+      "ingilizce": "English",
+      "dil_basariyla_degistirildi": "Language changed successfully."
     },
     "questions": {
       "anket_konu_basligi": "Survey Topic Title",

@@ -5,23 +5,29 @@ import PropTypes from "prop-types"
 import Feather from "react-native-vector-icons/Feather"
 import { Slider } from "react-native-awesome-slider"
 
-
 const Question2 = (props) => {
-  const { min, max, sliderValue, progress, handleValueChange } = props
+  // min={min}
+  // max={max}
+  // sliderValue={sliderValue}
+  // progress={progress}
+  // updateQuestionValue={updateQuestionValue}
+  // updateQuestionValue(questionIndex, value)
+
+  const { min, max, sliderValue, progress, updateQuestionValue } = props
 
   return (
     <>
-      {sliderValue === 0 ? (
+      {sliderValue === 3 ? (
         <>
-          <Feather name="frown" size={120} color="#0300A3" />
+          <Feather name="smile" size={120} color="#0300A3" />
         </>
-      ) : sliderValue === 1 ? (
+      ) : sliderValue === 2 ? (
         <>
           <Feather name="meh" size={120} color="#0300A3" />
         </>
       ) : (
         <>
-          <Feather name="smile" size={120} color="#0300A3" />
+          <Feather name="frown" size={120} color="#0300A3" />
         </>
       )}
 
@@ -36,7 +42,8 @@ const Question2 = (props) => {
         hapticMode="step"
         steps={2}
         onSlidingComplete={(value) => {
-          handleValueChange(value)
+          // handleValueChange(value)
+          updateQuestionValue(2, value)
         }}
         theme={{
           disableMinTrackTintColor: "red",
@@ -56,7 +63,7 @@ Question2.propTypes = {
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.object]).isRequired,
   sliderValue: PropTypes.number.isRequired,
   progress: PropTypes.oneOfType([PropTypes.number, PropTypes.object]).isRequired,
-  handleValueChange: PropTypes.func.isRequired,
+  updateQuestionValue: PropTypes.func.isRequired,
 }
 
 export default Question2

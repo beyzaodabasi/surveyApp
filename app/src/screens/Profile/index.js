@@ -213,7 +213,33 @@ const Profile = ({ ...props }) => {
         <TouchableOpacity style={styles().card}>
           <Text style={styles().cardText}>{i18n.t("profile.sartlar_ve_kosullar")}</Text>
         </TouchableOpacity>
+        <View style={styles().listItem}>
+          <Text style={styles().listText}>{i18n.t("profile.dil_secimi")}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles().card}
+          onPress={() => {
+            i18n.locale = "tr-TR"
+            setSuccess(true)
+            setAlertText(i18n.t("profile.dil_basariyla_degistirildi"))
+            setAlert(true)
+          }}
+        >
+          <Text style={styles().cardText}>{i18n.t("profile.turkce")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles().card}
+          onPress={() => {
+            i18n.locale = "en"
+            setSuccess(true)
+            setAlertText(i18n.t("profile.dil_basariyla_degistirildi"))
+            setAlert(true)
+          }}
+        >
+          <Text style={styles().cardText}>{i18n.t("profile.ingilizce")}</Text>
+        </TouchableOpacity>
       </ScrollView>
+      <View style={{ height: "10%" }}></View>
     </View>
   )
 }
