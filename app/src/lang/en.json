@@ -41,7 +41,8 @@
     },
     "home": {
       "merhaba": "Hello",
-      "ankete_basla": "START SURVEY"
+      "ankete_basla": "START SURVEY",
+      "tamamlanmamis_anket_bulunmaktadir": "There is an incomplete survey."
     },
     "survey": {
       "tamamlanan_anketler": "Completed Surveys",
@@ -50,7 +51,8 @@
       "bugun": "Today",
       "liste": "List",
       "modunuz": "Your Mode",
-      "temizle": "Clear"
+      "temizle": "Clear",
+      "anket": "Survey"
     },
     "profile": {
       "profil": "PROFILE",
@@ -73,7 +75,9 @@
       "anket_tamamlandi": "Survey Completed",
       "veriler_olusturuluyor": "Creating Data",
       "sonraki_soru": "Next Question",
-      "bitir": "Finish"
+      "bitir": "Finish",
+      "anket_verileri_eksik_veya_hatali": "Survey data is missing or incorrect.",
+      "anket_zaman_asimi" : "Survey time expired."
     }
   }
 }

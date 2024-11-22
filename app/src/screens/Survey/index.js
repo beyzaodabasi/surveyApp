@@ -20,60 +20,6 @@ const Survey = ({ ...props }) => {
   const [expanded, setExpanded] = useState(false)
   const [selectedCard, setSelectedCard] = useState({})
 
-  const data = [
-    {
-      id: 1,
-      title: "Anket",
-      date: "25.10.2023",
-      time: "14:52",
-      point: 30,
-    },
-    {
-      id: 2,
-      title: "Anket",
-      date: "25.10.2023",
-      time: "09:12",
-      point: 30,
-    },
-    {
-      id: 3,
-      title: "Anket",
-      date: "03.11.2023",
-      time: "01:27",
-      point: 30,
-    },
-    {
-      id: 4,
-      title: "Anket",
-      date: "25.10.2023",
-      time: "14:52",
-      point: 30,
-    },
-    {
-      id: 5,
-      title: "Anket",
-      date: "22.10.2023",
-      time: "19:23",
-      point: 30,
-    },
-    {
-      id: 6,
-      title: "Anket",
-      date: "25.10.2023",
-      time: "14:52",
-      point: 30,
-    },
-    {
-      id: 7,
-      title: "Anket",
-      date: "22.10.2023",
-      time: "19:23",
-      point: 30,
-    },
-  ]
-
-  console.log("surveyList", surveyList)
-
   function clearSurveyList() {
     updateSurveyList([])
   }
@@ -135,9 +81,9 @@ const Survey = ({ ...props }) => {
             </TouchableOpacity>
           </View>
           <FlatList
-            data={data}
+            data={surveyList}
             scrollEnabled={false}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.ID.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles().card}
@@ -145,7 +91,7 @@ const Survey = ({ ...props }) => {
                   LayoutAnimation.configureNext(LayoutAnimation.Presets.linear)
                   setExpanded(!expanded)
                   setSelectedCard(item)
-                  if (selectedCard.id != item.id) setExpanded(true)
+                  if (selectedCard.ID != item.ID) setExpanded(true)
                 }}
               >
                 <View style={styles().item1}>
@@ -153,20 +99,20 @@ const Survey = ({ ...props }) => {
                     style={{
                       fontSize: moderateScale(12),
                       fontWeight: "400",
-                      color: expanded && selectedCard.id == item.id ? "#0300A3" : "#1D1D1B",
+                      color: expanded && selectedCard.ID == item.ID ? "#0300A3" : "#1D1D1B",
                     }}
                   >
-                    {item.title}
+                    {i18n.t("survey.anket")}
                   </Text>
-                  {expanded && selectedCard.id == item.id ? <Ionicons name="chevron-down" size={18} /> : <Ionicons name="chevron-forward" size={18} />}
+                  {expanded && selectedCard.ID == item.ID ? <Ionicons name="chevron-down" size={18} /> : <Ionicons name="chevron-forward" size={18} />}
                 </View>
                 <View style={styles().item2}>
                   <Ionicons name="calendar-outline" size={18} style={styles().icon} color={"#0300A3"} />
-                  <Text style={styles().text1}>{item.date}</Text>
+                  <Text style={styles().text1}>{new Date(item.createdDate).toLocaleDateString()}</Text>
                   <Ionicons name="time-outline" size={18} style={styles().icon} color={"#0300A3"} />
-                  <Text style={styles().text1}>{item.time}</Text>
+                  <Text style={styles().text1}>{new Date(item.createdDate).toLocaleTimeString()}</Text>
                 </View>
-                {expanded && selectedCard.id == item.id && (
+                {expanded && selectedCard.ID == item.ID && (
                   <View style={styles().buttonView}>
                     <View></View>
                     <View style={styles().button}>
@@ -180,6 +126,8 @@ const Survey = ({ ...props }) => {
           />
         </View>
       </ScrollView>
+
+      <View style={{ height: "10%" }}></View>
     </View>
   )
 }

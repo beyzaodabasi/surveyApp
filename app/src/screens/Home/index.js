@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { View, Text, ScrollView, ImageBackground, TouchableOpacity } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import { moderateScale, scale } from "react-native-size-matters"
 import { LinearGradient } from "expo-linear-gradient"
 import { BlurView } from "@react-native-community/blur"
@@ -26,7 +27,8 @@ const Home = ({ ...props }) => {
     const createdDate = new Date()
     const template = {
       ID: ID,
-      maxSeconds: 1800,
+      // maxSeconds: 1800,
+      maxSeconds: 20,
       isCompleted: false,
       updatedDate: createdDate,
       createdDate: createdDate,
@@ -95,10 +97,12 @@ const Home = ({ ...props }) => {
     // check all survey objects and if one of them is not completed yet, dont create the new survey, find the not finished one
     const unfinishedSurvey = surveyList.find((survey) => !survey.isCompleted)
     if (unfinishedSurvey) {
-      setAlertText("You have an unfinished survey. Please complete it first.")
+      setAlertText(i18n.t("home.tamamlanmamis_anket_bulunmaktadir"))
       setSuccess(false)
       setAlert(true)
-      navigation.navigate("Questions")
+      setTimeout(() => {
+        navigation.navigate("Questions")
+      }, 2000)
       return
     }
 
@@ -110,18 +114,22 @@ const Home = ({ ...props }) => {
     navigation.navigate("Questions")
   }
 
-  // check every 3 second timeouted surveys and if they are not completed, update them
-  const INTERVAL = 5000
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!surveyList) return
+  // check timeouted surveys when Home screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      const currentDate = new Date()
+      // const timeoutedSurveys = surveyList.filter((survey) => {
+      //   const surveyDate = new Date(survey.updatedDate)
+      //   const diff = currentDate - surveyDate
+      //   const seconds = Math.floor(diff / 1000)
+      //   return seconds > survey.maxSeconds
+      // })
 
-      const now = new Date()
+      // do it more efficient way
       const updatedSurveyList = surveyList.map((survey) => {
-        console.log("HOME Is Survey Completed: ", survey.isCompleted)
         if (survey.isCompleted !== true) {
           const start = survey.createdDate
-          const elapsed = Math.floor((now - start) / 1000)
+          const elapsed = Math.floor((currentDate - start) / 1000)
           if (elapsed >= survey.maxSeconds) {
             return { ...survey, isCompleted: true }
           }
@@ -132,10 +140,35 @@ const Home = ({ ...props }) => {
       if (JSON.stringify(updatedSurveyList) !== JSON.stringify(surveyList)) {
         updateSurveyList(updatedSurveyList)
       }
-    }, INTERVAL)
+    }, [surveyList])
+  )
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const checkTimeoutSurveys = () => {
+  //       if (!surveyList) return
 
-    return () => clearInterval(interval)
-  }, [surveyList])
+  //       const now = new Date()
+  //       const updatedSurveyList = surveyList.map((survey) => {
+  //         console.log("HOME Is Survey Completed: ", survey.isCompleted)
+  //         if (survey.isCompleted !== true) {
+  //           const start = survey.createdDate
+  //           const elapsed = Math.floor((now - start) / 1000)
+  //           if (elapsed >= survey.maxSeconds) {
+  //             return { ...survey, isCompleted: true }
+  //           }
+  //         }
+  //         return survey
+  //       })
+
+  //       if (JSON.stringify(updatedSurveyList) !== JSON.stringify(surveyList)) {
+  //         updateSurveyList(updatedSurveyList)
+  //       }
+  //     }
+
+  //     checkTimeoutSurveys()
+
+  //   }, [surveyList])
+  // )
 
   return (
     <View style={styles().loginMain}>

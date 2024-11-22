@@ -12,7 +12,6 @@ export const styles = (background, text, lightGray5, primary, dark) =>
       backgroundColor: "#FFFFFF",
       paddingRight: moderateScale(20),
       paddingLeft: moderateScale(20),
-
     },
     mainView: {
       justifyContent: "center",
@@ -52,7 +51,7 @@ export const styles = (background, text, lightGray5, primary, dark) =>
     },
     listItem: {
       flexDirection: "row",
-        justifyContent: "space-between",
+      justifyContent: "space-between",
       alignItems: "center",
       paddingTop: moderateScale(12),
       paddingBottom: moderateScale(12),
@@ -82,7 +81,7 @@ export const styles = (background, text, lightGray5, primary, dark) =>
       width: "100%",
       justifyContent: "space-between",
       flexDirection: "row",
-    //   paddingBottom: moderateScale(12),
+      //   paddingBottom: moderateScale(12),
       paddingRight: moderateScale(12),
     },
     button: {

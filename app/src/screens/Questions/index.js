@@ -17,6 +17,11 @@ import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import * as authActions from "../../redux/actions/authActions"
 
+// Question Components
+import Question1 from "./Question1"
+import Question2 from "./Question2"
+import Question3 from "./Question3"
+
 const Question = ({ ...props }) => {
   const { surveyTemplate, surveyList, updateSurveyList } = props
   const navigation = useNavigation()
@@ -30,9 +35,13 @@ const Question = ({ ...props }) => {
   const progress = useSharedValue(sliderValue)
   const min = useSharedValue(0)
   const max = useSharedValue(2)
+  const [currentQuestion, setCurrentQuestion] = useState({})
+  const [currentSurvey, setCurrentSurvey] = useState({})
+  const [questions, setQuestions] = useState([])
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
   useEffect(() => {
-    console.log("SurveyList Changed!")
+    console.log("SurveyList Changed!", new Date())
     // console.log("Last of survey: ", surveyList[surveyList.length - 1])
   }, [surveyList])
 
@@ -91,67 +100,95 @@ const Question = ({ ...props }) => {
     ],
   } */
 
-  // find the first not finished survey in surveyList
-  const [currentSurvey, setCurrentSurvey] = useState({})
-  const [questions, setQuestions] = useState([])
   useEffect(() => {
+    // Check for not finished survey, if it is there
+    // then set the current survey to it
+    // if there is no not finished survey, then set the last survey
+
     if (!surveyList) return
     if (currentSurvey && currentSurvey.ID) return
-    const current = surveyList.find((survey) => survey.isCompleted === false) || {}
-    console.log(`🚀 ~ useEffect ~ current: `, current)
 
-    // // check the time is out, if it is out than change the screen
-    // const now = new Date()
-    // const start = new Date(current.createdDate)
-    // const elapsed = Math.floor((now - start) / 1000)
-    // if (elapsed >= current.maxSeconds) {
-    //   // Time is out, mark survey as completed and navigate back
-    //   const updatedSurveyList = surveyList.map((survey) => {
-    //     if (survey.ID === current.ID) {
-    //       return { ...survey, isCompleted: true }
-    //     }
-    //     return survey
-    //   })
-    //   updateSurveyList(updatedSurveyList)
-    //   navigation.navigate("Tabs")
-    //   return
-    // }
+    // Get the survey based on completion status
+    const notCompletedSurveys = surveyList.filter((survey) => !survey.isCompleted)
+    const surveyToResume = notCompletedSurveys.length > 0 ? notCompletedSurveys[0] : surveyList[surveyList.length - 1]
 
+    if (!surveyToResume || !surveyToResume.questions) {
+      setAlertText(i18n.t("questions.anket_verileri_eksik_veya_hatali"))
+      setAlert(true)
+      return
+    }
+
+    setCurrentSurvey(surveyToResume)
+    setQuestions([...surveyToResume.questions])
 
     console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
-    console.log(`🚀 ~ useEffect ~ QUESTIONS: `, current.questions)
+    console.log(`🚀 ~ useEffect ~ current: `, surveyToResume)
     console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
-
-    setCurrentSurvey(current)
-    setQuestions(current.questions || [])
   }, [surveyList])
 
-  // find the first null valued question for setting index of him
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  // // find the first null valued question for setting index of him
+  // useEffect(() => {
+  //   if (!currentQuestionIndex) return
+  //   if (currentSurvey?.questions) {
+  //     const nextUnanswered = currentSurvey.questions.findIndex((q) => q.value === null)
+  //     setCurrentQuestionIndex(nextUnanswered >= 0 ? nextUnanswered : 0)
+  //   }
+
+  //   // console log current question
+  //   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+  //   console.log(`🚀 ~ useEffect ~ currentQuestionIndex: `, currentQuestionIndex)
+  //   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+  // }, [currentSurvey])
+
   useEffect(() => {
-    if (currentSurvey && !currentQuestionIndex && currentSurvey.questions) {
-      const index = currentSurvey.questions.findIndex((question) => question.value === null) || 0
-      setCurrentQuestionIndex(index)
-    }
+    setCurrentQuestionIndex(0)
   }, [currentSurvey])
 
-  const currentQuestion = questions[currentQuestionIndex]
+  useEffect(() => {
+    if (questions.length > 0) {
+      setCurrentQuestion(questions[currentQuestionIndex])
+    }
+  }, [questions, currentQuestionIndex])
+
+  useEffect(() => {
+    if (currentQuestion && currentQuestion.value) {
+      switch (currentQuestion.ID) {
+        case 1:
+          setSelected(currentQuestion.value.id)
+          break
+        case 2:
+          setSliderValue(currentQuestion.value.id - 1)
+          progress.value = currentQuestion.value.id - 1
+          break
+        case 3:
+          setSelectValue(currentQuestion.value.title)
+          break
+      }
+    } else {
+      // Reset values when changing to unanswered question
+      setSelected(null)
+      setSliderValue(0)
+      progress.value = 0
+      setSelectValue(null)
+    }
+  }, [currentQuestion, progress])
 
   const handleOptionSelect = (value) => {
     const updatedQuestions = [...questions]
     updatedQuestions[currentQuestionIndex].value = value
     setQuestions(updatedQuestions)
 
-    // Find the current survey in the list and update its questions
-    const updatedSurveyList = surveyList.map((survey) => {
-      if (survey.ID === currentSurvey.ID) {
-        return {
-          ...survey,
-          questions: updatedQuestions,
-        }
-      }
-      return survey
-    })
+    // Immediately update local state
+    if (currentQuestion.ID === 1) {
+      setSelected(value.id)
+    } else if (currentQuestion.ID === 2) {
+      setSliderValue(value.id - 1)
+    } else if (currentQuestion.ID === 3) {
+      setSelectValue(value.title)
+    }
+
+    // Update surveyList in Redux
+    const updatedSurveyList = surveyList.map((survey) => (survey.ID === currentSurvey.ID ? { ...survey, questions: updatedQuestions } : survey))
     updateSurveyList(updatedSurveyList)
 
     // // Bir sonraki soruya geç
@@ -166,17 +203,17 @@ const Question = ({ ...props }) => {
   const handleValueChange = (value) => {
     setSliderValue(value)
     progress.value = value
-  
+
     // Update with consistent object structure
     const updatedQuestions = [...questions]
-    const valueNEW = { 
+    const valueNEW = {
       id: Math.floor(value) + 1,
-      title: String(Math.floor(value) + 1), 
-      color: "#25C133" 
+      title: String(Math.floor(value) + 1),
+      color: "#25C133",
     }
     updatedQuestions[currentQuestionIndex].value = valueNEW
     setQuestions(updatedQuestions)
-  
+
     const updatedSurveyList = surveyList.map((survey) => {
       if (survey.ID === currentSurvey.ID) {
         return {
@@ -207,27 +244,42 @@ const Question = ({ ...props }) => {
 
   // check timeout but with useCallback method
   const checkTimeOut = useCallback(() => {
+    if (!currentSurvey?.createdDate) return
+
     const now = new Date()
     const start = new Date(currentSurvey.createdDate)
     const elapsed = Math.floor((now - start) / 1000)
-    if (elapsed >= currentSurvey.maxSeconds) {
-      // Time is out, mark survey as completed and navigate back
+    const remaining = currentSurvey.maxSeconds - elapsed
+
+    // Time is out, mark survey as completed and navigate back
+    // navigation.navigate("Tabs")
+
+    if (remaining <= 0) {
+      // update the surveyList
       const updatedSurveyList = surveyList.map((survey) => {
-        if (survey.ID === currentSurvey.ID) {
+        if (survey.ID === currentSurvey.ID && !survey.isCompleted) {
           return { ...survey, isCompleted: true }
         }
         return survey
       })
-      updateSurveyList(updatedSurveyList)
-      navigation.navigate("Tabs")
+
+      // check they are same 
+      if (JSON.stringify(updatedSurveyList) !== JSON.stringify(surveyList)) {
+        updateSurveyList(updatedSurveyList)
+      }
+
+      setAlertText(i18n.t("questions.anket_zaman_asimi"))
+      setAlert(true)
     }
-  }, [currentSurvey, surveyList])
+  }, [currentSurvey])
 
   useEffect(() => {
-    const timeoutId = setTimeout(checkTimeOut, 5000)
+    if (!currentSurvey?.createdDate) return
 
-    return () => clearTimeout(timeoutId) // Cleanup
-  }, [])
+    const timeoutId = setInterval(checkTimeOut, 1000)
+
+    return () => clearInterval(timeoutId) // Cleanup
+  }, [checkTimeOut, currentSurvey])
 
   // Finish the survey
   function finishTheSurvey() {
@@ -250,8 +302,24 @@ const Question = ({ ...props }) => {
       setQuestions([])
       setCurrentQuestionIndex(0)
       setTimer("00:00")
+      setSliderValue(0)
+      setSelectValue()
+      setSelected()
+      setAlert(false)
+      setAlertText("")
+      setSuccess(false)
+      setCurrentQuestion({})
     }
   }, [])
+
+  // a null check for if below values are null then return a error message
+  // if (!currentSurvey || !currentSurvey.ID || !currentQuestion) {
+  //   return (
+  //     <View style={styles().main}>
+  //       <Text style={styles().errorText}>{alertText || "Anket verileri yükleniyor. Lütfen bekleyin..."}</Text>
+  //     </View>
+  //   )
+  // }
 
   return (
     <View style={styles().main}>
@@ -304,152 +372,161 @@ const Question = ({ ...props }) => {
             <View style={styles().chipView}>
               {/* Seçenekler */}
               {currentQuestion.ID === 1 ? (
-                <>
-                  <FlatList
-                    data={currentQuestion.options}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                      <>
-                        <TouchableOpacity
-                          onPress={() => {
-                            handleOptionSelect(item.title)
-                            setSelected(item.id)
-                          }}
-                          style={{
-                            ...styles().chip,
-                            backgroundColor: item.color,
-                            transform: [
-                              {
-                                translateY: selected !== item.id ? moderateScale(10) : 0,
-                              },
-                            ],
-                          }}
-                        >
-                          <Text style={styles().chipText}>{item.title}</Text>
-                        </TouchableOpacity>
-                        {/* 
-              A horizontal line for wich touchable is selected, draw a blue line under the selected touchable
-              */}
-                        <View style={styles().line} />
-                        {selected === item.id && (
-                          <View
-                            style={{
-                              ...styles().selectedLine,
-                              backgroundColor: item.color,
-                            }}
-                          />
-                        )}
-                      </>
-                    )}
-                    ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
-                    horizontal
-                  />
-                </>
+                //   <>
+                //     <FlatList
+                //       data={currentQuestion.options}
+                //       keyExtractor={(item, index) => index.toString()}
+                //       renderItem={({ item }) => (
+                //         <>
+                //           <TouchableOpacity
+                //             onPress={() => {
+                //               handleOptionSelect(item.title)
+                //               setSelected(item.id)
+                //             }}
+                //             style={{
+                //               ...styles().chip,
+                //               backgroundColor: item.color,
+                //               transform: [
+                //                 {
+                //                   translateY: selected !== item.id ? moderateScale(10) : 0,
+                //                 },
+                //               ],
+                //             }}
+                //           >
+                //             <Text style={styles().chipText}>{item.title}</Text>
+                //           </TouchableOpacity>
+                //           {/*
+                // A horizontal line for wich touchable is selected, draw a blue line under the selected touchable
+                // */}
+                //           <View style={styles().line} />
+                //           {selected === item.id && (
+                //             <View
+                //               style={{
+                //                 ...styles().selectedLine,
+                //                 backgroundColor: item.color,
+                //               }}
+                //             />
+                //           )}
+                //         </>
+                //       )}
+                //       ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
+                //       horizontal
+                //     />
+                //   </>
+                <Question1 currentQuestion={currentQuestion} handleOptionSelect={handleOptionSelect} selected={selected} setSelected={setSelected} moderateScale={moderateScale} />
               ) : currentQuestion.ID === 2 ? (
-                <>
-                  {sliderValue === 0 ? (
-                    <>
-                      <Feather name="frown" size={120} color="#0300A3" />
-                    </>
-                  ) : sliderValue === 1 ? (
-                    <>
-                      <Feather name="meh" size={120} color="#0300A3" />
-                    </>
-                  ) : (
-                    <>
-                      <Feather name="smile" size={120} color="#0300A3" />
-                    </>
-                  )}
+                // <>
+                //   {sliderValue === 0 ? (
+                //     <>
+                //       <Feather name="frown" size={120} color="#0300A3" />
+                //     </>
+                //   ) : sliderValue === 1 ? (
+                //     <>
+                //       <Feather name="meh" size={120} color="#0300A3" />
+                //     </>
+                //   ) : (
+                //     <>
+                //       <Feather name="smile" size={120} color="#0300A3" />
+                //     </>
+                //   )}
 
-                  <Slider
-                    style={{
-                      width: 300,
-                      height: 100,
-                    }}
-                    progress={progress}
-                    minimumValue={min}
-                    maximumValue={max}
-                    hapticMode="step"
-                    steps={2}
-                    onSlidingComplete={(value) => {
-                      handleValueChange(value)
-                    }}
-                    theme={{
-                      disableMinTrackTintColor: "red",
-                      maximumTrackTintColor: "rgba(3, 0, 163, 0.2)",
-                      minimumTrackTintColor: "#0300A3",
-                      cacheTrackTintColor: "#333",
-                      bubbleBackgroundColor: "#666",
-                      heartbeatColor: "#999",
-                    }}
-                  />
-                </>
+                //   <Slider
+                //     style={{
+                //       width: 300,
+                //       height: 100,
+                //     }}
+                //     progress={progress}
+                //     minimumValue={min}
+                //     maximumValue={max}
+                //     hapticMode="step"
+                //     steps={2}
+                //     onSlidingComplete={(value) => {
+                //       handleValueChange(value)
+                //     }}
+                //     theme={{
+                //       disableMinTrackTintColor: "red",
+                //       maximumTrackTintColor: "rgba(3, 0, 163, 0.2)",
+                //       minimumTrackTintColor: "#0300A3",
+                //       cacheTrackTintColor: "#333",
+                //       bubbleBackgroundColor: "#666",
+                //       heartbeatColor: "#999",
+                //     }}
+                //   />
+                // </>
+                <Question2 min={min} max={max} sliderValue={sliderValue} progress={progress} handleValueChange={handleValueChange} />
               ) : (
                 currentQuestion.ID === 3 && (
-                  <>
-                    {/* <FlatList
-                      data={currentQuestion.options}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={({ item }) => (
-                        <>
-                          <TouchableOpacity
-                            onPress={() => {
-                              handleOptionSelect(item)
-                              setSelectValue(item.id)
-                            }}
-                            style={{
-                              ...styles().chip1,
-                              backgroundColor: selectValue !== item.id ? "#EFEFFF" : "#0300A3",
-                            }}
-                          >
-                            <Text
-                              style={{
-                                ...styles().chipText,
-                                color: selectValue !== item.id ? "rgba(29, 29, 27, 0.4)" : "#FFFFFF",
-                              }}
-                            >
-                              {item.title}
-                            </Text>
-                          </TouchableOpacity>
-                        </>
-                      )}
-                      ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
-                      horizontal
-                      
-                    /> */}
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "center",
-                        width: "90%",
-                        alignSelf: "center",
-                      }}
-                    >
-                      {currentQuestion.options.map((item, index) => (
-                        <TouchableOpacity
-                          key={item.id}
-                          onPress={() => {
-                            handleOptionSelect(item.title)
-                            setSelectValue(item.title)
-                          }}
-                          style={{
-                            ...styles().chip1,
-                            backgroundColor: selectValue !== item.title ? "#EFEFFF" : "#0300A3",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              ...styles().chipText,
-                              color: selectValue !== item.title ? "rgba(29, 29, 27, 0.4)" : "#FFFFFF",
-                            }}
-                          >
-                            {item.title}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </>
+                  // <>
+                  //   {/* <FlatList
+                  //     data={currentQuestion.options}
+                  //     keyExtractor={(item, index) => index.toString()}
+                  //     renderItem={({ item }) => (
+                  //       <>
+                  //         <TouchableOpacity
+                  //           onPress={() => {
+                  //             handleOptionSelect(item)
+                  //             setSelectValue(item.id)
+                  //           }}
+                  //           style={{
+                  //             ...styles().chip1,
+                  //             backgroundColor: selectValue !== item.id ? "#EFEFFF" : "#0300A3",
+                  //           }}
+                  //         >
+                  //           <Text
+                  //             style={{
+                  //               ...styles().chipText,
+                  //               color: selectValue !== item.id ? "rgba(29, 29, 27, 0.4)" : "#FFFFFF",
+                  //             }}
+                  //           >
+                  //             {item.title}
+                  //           </Text>
+                  //         </TouchableOpacity>
+                  //       </>
+                  //     )}
+                  //     ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
+                  //     horizontal
+
+                  //   /> */}
+                  //   <View
+                  //     style={{
+                  //       flexDirection: "row",
+                  //       flexWrap: "wrap",
+                  //       justifyContent: "center",
+                  //       width: "90%",
+                  //       alignSelf: "center",
+                  //     }}
+                  //   >
+                  //     {currentQuestion.options.map((item, index) => (
+                  //       <TouchableOpacity
+                  //         key={item.id}
+                  //         onPress={() => {
+                  //           handleOptionSelect(item.title)
+                  //           setSelectValue(item.title)
+                  //         }}
+                  //         style={{
+                  //           ...styles().chip1,
+                  //           backgroundColor: selectValue !== item.title ? "#EFEFFF" : "#0300A3",
+                  //         }}
+                  //       >
+                  //         <Text
+                  //           style={{
+                  //             ...styles().chipText,
+                  //             color: selectValue !== item.title ? "rgba(29, 29, 27, 0.4)" : "#FFFFFF",
+                  //           }}
+                  //         >
+                  //           {item.title}
+                  //         </Text>
+                  //       </TouchableOpacity>
+                  //     ))}
+                  //   </View>
+                  // </>
+                  // <Question3
+                  //   currentQuestion={currentQuestion}
+                  //   handleOptionSelect={handleOptionSelect}
+                  //   selectValue={selectValue}
+                  //   setSelectValue={setSelectValue}
+                  // />
+                  <Question3 currentQuestion={currentQuestion} handleOptionSelect={handleOptionSelect} selectValue={selectValue} setSelectValue={setSelectValue} />
                 )
               )}
             </View>

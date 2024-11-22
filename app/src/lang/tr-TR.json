@@ -41,7 +41,8 @@
     },
     "home": {
       "merhaba": "Merhaba",
-      "ankete_basla": "ANKETE BAŞLA"
+      "ankete_basla": "ANKETE BAŞLA",
+      "tamamlanmamis_anket_bulunmaktadir": "Tamamlanmamış anket bulunmaktadır."
     },
     "survey": {
       "tamamlanan_anketler": "Tamamlanan Anketler",
@@ -50,7 +51,8 @@
       "bugun": "Bugün",
       "liste": "Liste",
       "modunuz": "Modunuz",
-      "temizle": "Temizle"
+      "temizle": "Temizle",
+      "anket": "Anket"
     },
     "profile": {
       "profil": "PROFİL",
@@ -73,7 +75,9 @@
       "anket_tamamlandi": "Anket Tamamlandı",
       "veriler_olusturuluyor": "Veriler Oluşturuluyor",
       "sonraki_soru": "Sonraki Soru",
-      "bitir": "Bitir"
+      "bitir": "Bitir",
+      "anket_verileri_eksik_veya_hatali": "Anket verileri eksik veya hatalı.",
+      "anket_zaman_asimi" : "Anket süresi dolmuştur."
     }
   }
 }
