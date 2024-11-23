@@ -8,7 +8,7 @@ Kullanıcı anketleri için temiz arayüzlü ve gerçek zamanlı ilerleme takibi
   - Güvenli giriş ve kayıt
   - Profil yönetimi
 - **Anket Özellikleri**
-  - Çoklu dil desteği (İngilizce/Türkçe) ve ***dil seçimi***
+  - Çoklu dil desteği (İngilizce/Türkçe) ve **_dil seçimi_**
   - Zamanlı anket oturumları
   - Gerçek zamanlı ilerleme takibi
 - **Soru Tipleri**
@@ -62,6 +62,11 @@ npm install
 npx expo start
 ```
 
+## Kullanıcı Bilgileri
+
+- Kullanıcı Adı: mor_2314
+- Şifre: 83r5^_
+
 ---
 
 # SurveyApp
@@ -74,7 +79,7 @@ A React Native mobile application for conducting user surveys with a clean inter
   - Secure login and registration
   - Profile management
 - **Survey Capabilities**
-  - Multi-language support (English/Turkish) and ***language selection***
+  - Multi-language support (English/Turkish) and **_language selection_**
   - Timed survey sessions
   - Real-time progress tracking
 - **Question Types**
@@ -127,3 +132,9 @@ npm install
 # Start the application
 npx expo start
 ```
+
+## User Information
+
+- Username: mor_2314
+- Password: 83r5^_
+
